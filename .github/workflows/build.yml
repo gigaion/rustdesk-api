@@ -117,18 +117,13 @@ jobs:
           path: |
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.tar.gz
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip
-
-      - name: Extract version from tag
-        id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.tar.gz
             ${{ matrix.job.goos}}-${{ matrix.job.platform }}.zip
-          tag_name: ${{ env.TAG }}  # Use the extracted tag
+          tag_name: ${{ env.LATEST_TAG }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
