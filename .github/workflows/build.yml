@@ -162,9 +162,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract version from tag
-        id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+    - name: Extract version from tag
+      id: vars
+      run: |
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        else
+          echo "TAG=latest" >> $GITHUB_ENV  # Default to 'latest' if not a tag
+        fi
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -210,9 +215,14 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
-      - name: Extract version from tag
-        id: vars
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+    - name: Extract version from tag
+      id: vars
+      run: |
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        else
+          echo "TAG=latest" >> $GITHUB_ENV  # Default to 'latest' if not a tag
+        fi
 
       - name: Log in to Docker Hub
         if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only log in if Docker Hub push is enabled
