@@ -30,12 +30,12 @@ on:
 
 env:
   LATEST_TAG: latest
-  WEBCLIENT_SOURCE_LOCATION: ${{ env.WEBCLIENT_SOURCE_LOCATION || 'https://github.com/lejianwen/rustdesk-api-web' }}
-  BASE_IMAGE_NAMESPACE: ${{ env.BASE_IMAGE_NAMESPACE || 'lejianwen' }}  # Default is 'lejianwen' but can be overridden
-  DOCKERHUB_IMAGE_NAMESPACE: ${{ env.DOCKERHUB_IMAGE_NAMESPACE || 'lejianwen' }}  # Default is 'lejianwen' but can be overridden
-  GHCR_IMAGE_NAMESPACE: ${{ env.GHCR_IMAGE_NAMESPACE || 'lejianwen' }}  # Default is 'lejianwen' but can be overridden
-  SKIP_DOCKER_HUB: ${{ env.SKIP_DOCKER_HUB || 'false' }}  # Set to 'true' to skip Docker Hub
-  SKIP_GHCR: ${{ env.SKIP_GHCR || 'false' }}  # Set to 'true' to skip GHCR
+  WEBCLIENT_SOURCE_LOCATION: 'https://github.com/lejianwen/rustdesk-api-web'  # Set default value directly
+  BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE }}  # Get input value
+  DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE }}  # Get input value
+  GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE }}  # Get input value
+  SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB }}  # Get input value
+  SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}  # Get input value
 jobs:
   build:
     runs-on: ubuntu-latest
