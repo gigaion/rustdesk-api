@@ -35,9 +35,9 @@ on:
 env:
   LATEST_TAG: latest
   WEBCLIENT_SOURCE_LOCATION: ${{ github.event.inputs.WEBCLIENT_SOURCE_LOCATION }}
-  BASE_IMAGE_NAMESPACE: ${{ toLower(github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor) }}
-  DOCKERHUB_IMAGE_NAMESPACE: ${{ toLower(github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor) }}
-  GHCR_IMAGE_NAMESPACE: ${{ toLower(github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor) }}
+  BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor | lower}
+  DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor | lower }}
+  GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor | lower }}
   SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB }}
   SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}
 jobs:
