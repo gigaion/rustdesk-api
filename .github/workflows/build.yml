@@ -144,7 +144,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: {{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api
+          images: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api
 
       - name: Download binaries
         uses: actions/download-artifact@v4
@@ -205,9 +205,9 @@ jobs:
       - name: Create and push manifest (:version)
         uses: Noelware/docker-manifest-action@master
         with:
-          base-image: {{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
-          extra-images: {{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
-                        {{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64,
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
+          extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
+                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64,
                         ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
                         ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
@@ -215,9 +215,9 @@ jobs:
       - name: Create and push manifest (:latest)
         uses: Noelware/docker-manifest-action@master
         with:
-          base-image: {{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
-          extra-images: {{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
-                        {{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64,
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
+          extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
+                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64,
                         ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
                         ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
           push: true
