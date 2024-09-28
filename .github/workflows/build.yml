@@ -251,22 +251,38 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create and push manifest (:version)
+      - name: Create and push manifest Docker Hub (:version)
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}
         uses: Noelware/docker-manifest-action@master
         with:
           base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
           extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
-                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64,
-                        ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
+                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
+          push: true
+
+      - name: Create and push manifest GHCR (:version)
+        if: ${{ env.SKIP_GHCR == 'false' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
+          extra-images: ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
                         ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
 
-      - name: Create and push manifest (:latest)
+      - name: Create and push manifest Docker Hub (:latest)
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}
         uses: Noelware/docker-manifest-action@master
         with:
           base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
           extra-images: ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
-                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64,
-                        ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
+                        ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
+          push: true
+
+      - name: Create and push manifest GHCR (:latest)
+        if: ${{ env.SKIP_GHCR == 'false' }}
+        uses: Noelware/docker-manifest-action@master
+        with:
+          base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
+          extra-images: ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
                         ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
           push: true
