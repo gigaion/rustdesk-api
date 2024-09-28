@@ -190,6 +190,7 @@ jobs:
           file ${{ matrix.job.platform }}/apimain
 
       - name: Build and push Docker image to Docker Hub ${{ matrix.job.platform }}
+        if: ${{ env.SKIP_DOCKER_HUB == 'false' }}  # Only run this step if SKIP_DOCKER_HUB is false
         uses: docker/build-push-action@v5
         with:
           context: "."
@@ -199,14 +200,25 @@ jobs:
           provenance: false
           build-args: |
             BUILDARCH=${{ matrix.job.platform }}
-          # Conditional Tags: 
-          #   The tags section dynamically adds tags for Docker Hub and GHCR based on the values of SKIP_DOCKER_HUB and SKIP_GHCR. 
-          #   If pushing to either Docker Hub or GHCR is disabled, the corresponding tags are omitted.
           tags: |
-            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }}${{ env.SKIP_DOCKER_HUB == 'false' && ',' || '' }}
-            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}${{ env.SKIP_DOCKER_HUB == 'false' && ',' || '' }}
-            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }}${{ env.SKIP_GHCR == 'false' && ',' || '' }}
-            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}${{ env.SKIP_GHCR == 'false' && ',' || '' }}
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }},
+            ${{ env.DOCKERHUB_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Docker image to GHCR ${{ matrix.job.platform }}
+        if: ${{ env.SKIP_GHCR == 'false' }}  # Only run this step if SKIP_GHCR is false
+        uses: docker/build-push-action@v5
+        with:
+          context: "."
+          file: ./Dockerfile
+          platforms: ${{ matrix.job.docker_platform }}
+          push: true
+          provenance: false
+          build-args: |
+            BUILDARCH=${{ matrix.job.platform }}
+          tags: |
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.LATEST_TAG }}-${{ matrix.job.platform }},
+            ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-${{ matrix.job.platform }}
           labels: ${{ steps.meta.outputs.labels }}
 
   #
