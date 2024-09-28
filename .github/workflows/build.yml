@@ -265,8 +265,8 @@ jobs:
         uses: Noelware/docker-manifest-action@master
         with:
           base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}
-          extra-images: ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
-                        ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
+          extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-amd64, 
+                        ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:${{ env.TAG }}-arm64
           push: true
 
       - name: Create and push manifest Docker Hub (:latest)
@@ -283,6 +283,6 @@ jobs:
         uses: Noelware/docker-manifest-action@master
         with:
           base-image: ${{ env.BASE_IMAGE_NAMESPACE }}/rustdesk-api:latest
-          extra-images: ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
-                        ghcr.io/{{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
+          extra-images: ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-amd64, 
+                        ghcr.io/${{ env.GHCR_IMAGE_NAMESPACE }}/rustdesk-api:latest-arm64
           push: true
