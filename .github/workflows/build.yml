@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       BASE_IMAGE_NAMESPACE:
-        description: 'Base image namespace (default: lejianwen)'
+        description: 'Base image namespace (Default: Your Github username)'
         required: false
-        default: 'lejianwen'
+        default: ''
       DOCKERHUB_IMAGE_NAMESPACE:
-        description: 'Docker Hub image namespace (default: lejianwen)'
+        description: 'Docker Hub image namespace (Default: Your Github username)'
         required: false
-        default: 'lejianwen'
+        default: ''
       GHCR_IMAGE_NAMESPACE:
-        description: 'GitHub Container Registry image namespace (default: lejianwen)'
+        description: 'GitHub Container Registry image namespace (Default: Your Github username)'
         required: false
-        default: 'lejianwen'
+        default: ''
       SKIP_DOCKER_HUB:
         description: 'Set to true to skip pushing to Docker Hub (default: false)'
         required: false
@@ -23,6 +23,10 @@ on:
         description: 'Set to true to skip pushing to GHCR (default: false)'
         required: false
         default: 'false'
+      WEBCLIENT_SOURCE_LOCATION:
+        description: 'Web Client API Repository'
+        required: true
+        default: 'https://github.com/lejianwen/rustdesk-api-web'
   push:
     tags:
       - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
@@ -30,12 +34,12 @@ on:
 
 env:
   LATEST_TAG: latest
-  WEBCLIENT_SOURCE_LOCATION: 'https://github.com/lejianwen/rustdesk-api-web'  # Set default value directly
-  BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE }}  # Get input value
-  DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE }}  # Get input value
-  GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE }}  # Get input value
-  SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB }}  # Get input value
-  SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}  # Get input value
+  WEBCLIENT_SOURCE_LOCATION: ${{ github.event.inputs.WEBCLIENT_SOURCE_LOCATION }}
+  BASE_IMAGE_NAMESPACE: ${{ github.event.inputs.BASE_IMAGE_NAMESPACE || github.actor }}
+  DOCKERHUB_IMAGE_NAMESPACE: ${{ github.event.inputs.DOCKERHUB_IMAGE_NAMESPACE || github.actor }}
+  GHCR_IMAGE_NAMESPACE: ${{ github.event.inputs.GHCR_IMAGE_NAMESPACE || github.actor }}
+  SKIP_DOCKER_HUB: ${{ github.event.inputs.SKIP_DOCKER_HUB }}
+  SKIP_GHCR: ${{ github.event.inputs.SKIP_GHCR }}
 jobs:
   build:
     runs-on: ubuntu-latest
