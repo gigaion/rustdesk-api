@@ -2,6 +2,27 @@ name: Build
 
 on:
   workflow_dispatch:
+    inputs:
+      BASE_IMAGE_NAMESPACE:
+        description: 'Base image namespace (default: lejianwen)'
+        required: false
+        default: 'lejianwen'
+      DOCKERHUB_IMAGE_NAMESPACE:
+        description: 'Docker Hub image namespace (default: lejianwen)'
+        required: false
+        default: 'lejianwen'
+      GHCR_IMAGE_NAMESPACE:
+        description: 'GitHub Container Registry image namespace (default: lejianwen)'
+        required: false
+        default: 'lejianwen'
+      SKIP_DOCKER_HUB:
+        description: 'Set to true to skip pushing to Docker Hub (default: false)'
+        required: false
+        default: 'false'
+      SKIP_GHCR:
+        description: 'Set to true to skip pushing to GHCR (default: false)'
+        required: false
+        default: 'false'
   push:
     tags:
       - 'v*.*.*'  # 当推送带有版本号的 tag（例如 v1.0.0）时触发工作流
@@ -44,7 +65,7 @@ jobs:
 
       - name: build rustdesk-api-web
         run: |
-          git clone {{ env.WEBCLIENT_SOURCE_LOCATION }}
+          git clone ${{ env.WEBCLIENT_SOURCE_LOCATION }}
           cd rustdesk-api-web
           npm install
           npm run build
